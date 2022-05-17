@@ -76,7 +76,7 @@ ansible.posix.firewalld:
   permanent: yes
   state: enabled
 notify:
-  - reload firewalld   
+  - reload firewalld
 
 - name: open port 587/TCP for HTTP
 ansible.posix.firewalld:
@@ -92,12 +92,23 @@ ansible.posix.firewalld:
   permanent: yes
   state: enabled
 notify:
-  - reload firewalld  
+  - reload firewalld
 
+- name: open port 443/TCP for HTTP
+ansible.posix.firewalld:
+  port: 443/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
 
-
-  
-
+- name: open port 443/UDP for HTTP
+ansible.posix.firewalld:
+  port: 443/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
 
 - name: open port 465/TCP for SMTP
 ansible.posix.firewalld:
@@ -107,3 +118,106 @@ ansible.posix.firewalld:
 notify:
   - reload firewalld
 
+- name: open port 465/UDP for SMTP
+ansible.posix.firewalld:
+  port: 465/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 993/TCP for HTTP
+ansible.posix.firewalld:
+  port: 993/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 993/UDP for HTTP
+ansible.posix.firewalld:
+  port: 993/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 111/TCP for HTTP
+ansible.posix.firewalld:
+  port: 111/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 2049/TCP for HTTP
+ansible.posix.firewalld:
+  port: 2049/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 139/TCP for HTTP
+ansible.posix.firewalld:
+  port: 139/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 445/TCP for HTTP
+ansible.posix.firewalld:
+  port: 445/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 5005/TCP for HTTP
+ansible.posix.firewalld:
+  port: 5005/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 50080/TCP for DNS
+ansible.posix.firewalld:
+  port: 50080/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 50080/UDP for DNS
+ansible.posix.firewalld:
+  port: 50080/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 58080/TCP for DNS
+ansible.posix.firewalld:
+  port: 58080/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 58080/UDP for DNS
+ansible.posix.firewalld:
+  port: 58080/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 6443/TCP for HTTP
+ansible.posix.firewalld:
+  port: 6443/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld

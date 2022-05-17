@@ -1,0 +1,74 @@
+- name: Install the latest version of postfix
+  dnf:
+    name: postfix
+    state: latest
+
+- name: Install the latest version of alpine
+  dnf:
+    name: alpine
+    state: latest
+
+- name: Install the latest version of dovecot
+  dnf:
+    name: dovecot
+    state: latest
+
+- name: Install the latest version of telnet
+  dnf:
+    name: telnet
+    state: latest
+
+- name: Install the latest version of epel-release
+  dnf:
+    name: epel-release
+    state: latest
+
+- name: Install the latest version of dnf-plugins-core
+  dnf:
+    name: dnf-plugins-core
+    state: latest
+
+- name: Install the latest version of make
+  dnf:
+    name: make
+    state: latest
+
+- name: Install the latest version of ImageMagick
+  dnf:
+    name: ImageMagick
+    state: latest
+
+- name: Install the latest version of ImageMagick-devel
+  dnf:
+    name: ImageMagick-devel
+    state: latest
+
+- name: Install the latest version of ImageMagick-perl
+  dnf:
+    name: ImageMagick-perl
+    state: latest
+
+- name: Install the latest version of pcre-devel
+  dnf:
+    name: pcre-devel
+    state: latest
+
+- name: Install the latest version of zlib
+  dnf:
+    name: zlib
+    state: latest
+
+- name: Install the latest version of zlib-devel
+  dnf:
+    name: zlib-devel
+    state: latest
+
+- name: Install the latest version of libzip
+  dnf:
+    name: libzip
+    state: latest
+
+- name: Install the latest version of libzip-devel
+  dnf:
+    name: libzip-devel
+    state: latest   

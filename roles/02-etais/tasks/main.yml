@@ -24,3 +24,8 @@
     line: "scoring ALL=(ALL) NOPASSWD: ALL"
     state: present
     create: yes
+
+- name: Install the latest version of dnf
+  yum:
+    name: dnf
+    state: latest    

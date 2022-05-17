@@ -52,6 +52,16 @@
     group: root
     mode: '0644'
 
+- name: Install the latest version of bind
+  yum:
+    name: bind
+    state: latest
+
+- name: Install the latest version of bind-utils
+  yum:
+    name: bind-utils
+    state: latest    
+
 - name: Inserts into resolv.conf
   template:
     src: resolv.conf.j2
