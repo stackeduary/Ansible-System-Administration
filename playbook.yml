@@ -1,0 +1,25 @@
+- hosts: all
+  user: centos
+  become: yes
+  become_user: root
+  vars:
+    hostname: B98041
+    domain_name: sa.cs.ut.ee
+
+  roles:
+  - { role: ports, tags: ports }
+  - { role: 02-etais, tags: etais }
+  - { role: 04-dns, tags: dns }
+  - { role: 05-web-apache, tags: web-apache }
+  - { role: 06-email-smtp-imap, tags: email-smtp-imap }
+  - { role: 07-tls, tags: tls }
+  - { role: 08-filesystems, tags: filesystems }
+  - { role: 09-containers, tags: containers }
+  - { role: 10-devops, tags: DevOps }
+  - { role: 11-k8s, tags: Kubernetes }
+  - { role: services, tags: services }
+    #- tier1
+
+  tasks:
+  # - name: Testing this bitch out
+  #   debug: msg="Ansible is a savior and a bitch at the same time. I am {{ ansible_user_id }} on server {{ ansible_hostname }}"
