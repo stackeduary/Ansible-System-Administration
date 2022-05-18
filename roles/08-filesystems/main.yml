@@ -1,0 +1,25 @@
+---
+- name: Install the latest version of nfs-utils
+  dnf:
+    name: nfs-utils
+    state: latest
+
+- name: Install the latest version of samba
+  dnf:
+    name: samba
+    state: latest
+
+- name: Install the latest version of samba-common
+  dnf:
+    name: samba-common
+    state: latest
+
+- name: Install the latest version of samba-client
+  dnf:
+    name: samba-client
+    state: latest
+
+- name: Install the latest version of cifs-utils
+  dnf:
+    name: cifs-utils
+    state: latest

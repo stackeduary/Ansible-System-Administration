@@ -1,0 +1,12 @@
+; BIND data file for local zone b98041.sa.cs.ut.ee;
+$TTL    15M
+@       IN      SOA     ns1.{{ hostname }}.{{ domain_name }}. root.{{ hostname }}.{{ domain_name }} (
+              {{ zone_serial }}   ; Serial
+                            15M   ; Refresh
+                             5M   ; Retry
+                           120M   ; Expire
+                           600 )  ; Negative Cache TTL
+@                      IN     NS      ns1
+@                      IN     A       {{ ip_address }}
+ns1                    IN     A       {{ ip_address }}
+{{ hostname }}         IN     A       {{ ip_address }}

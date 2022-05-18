@@ -1,3 +1,4 @@
+---
 - name: Install the latest version of httpd
   dnf:
     name: httpd
@@ -11,6 +12,36 @@
 - name: Install the latest version of flask using PIP
   pip:
     name: flask
+
+- name: Install the latest version of php-mysqlnd
+  dnf:
+    name: php-mysqlnd
+    state: latest
+
+- name: Install the latest version of php-fpm
+  dnf:
+    name: php-fpm
+    state: latest
+
+- name: Install the latest version of mariadb-server
+  dnf:
+    name: mariadb-server
+    state: latest
+
+- name: Install the latest version of tar
+  dnf:
+    name: tar
+    state: latest
+
+- name: Install the latest version of curl
+  dnf:
+    name: curl
+    state: latest
+
+- name: Install the latest version of php-json
+  dnf:
+    name: php-json
+    state: latest    
 
 - name: Install the latest version of mod_security
   dnf:

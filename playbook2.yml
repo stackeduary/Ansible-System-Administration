@@ -1,3 +1,4 @@
+---
 - hosts: localhost
   user: centos
   become: yes

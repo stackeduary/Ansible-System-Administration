@@ -1,0 +1,10 @@
+---
+- name: Install the latest version of mod_ssl
+  dnf:
+    name: mod_ssl
+    state: latest
+
+- name: Install the latest version of cyrus-sasl-plain
+  dnf:
+    name: cyrus-sasl-plain
+    state: latest

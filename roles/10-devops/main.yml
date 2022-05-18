@@ -1,0 +1,5 @@
+---
+- name: Install the latest version of trivy
+  dnf:
+    name: trivy
+    state: latest

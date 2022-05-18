@@ -1,0 +1,25 @@
+---
+- name: Install the latest version of yum-utils
+  dnf:
+    name: yum-utils
+    state: latest
+
+- name: Install the latest version of docker-ce
+  dnf:
+    name: docker-ce
+    state: latest
+
+- name: Install the latest version of docker-ce-cli
+  dnf:
+    name: docker-ce-cli
+    state: latest
+
+- name: Install the latest version of containerd.io
+  dnf:
+    name: containerd.io
+    state: latest
+
+- name: Install the latest version of docker-compose-plugin
+  dnf:
+    name: docker-compose-plugin
+    state: latest

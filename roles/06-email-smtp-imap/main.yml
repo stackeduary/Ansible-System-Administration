@@ -1,3 +1,4 @@
+---
 - name: Install the latest version of postfix
   dnf:
     name: postfix
@@ -71,4 +72,94 @@
 - name: Install the latest version of libzip-devel
   dnf:
     name: libzip-devel
-    state: latest   
+    state: latest
+
+- name: Install the latest version of libmcrypt-devel
+  dnf:
+    name: libmcrypt-devel
+    state: latest
+
+- name: Install the latest version of php
+  dnf:
+    name: php
+    state: latest
+
+- name: Install the latest version of php-fpm
+  dnf:
+    name: php-fpm
+    state: latest
+
+- name: Install the latest version of php-devel
+  dnf:
+    name: php-devel
+    state: latest
+
+- name: Install the latest version of php-pear
+  dnf:
+    name: php-pear
+    state: latest
+
+- name: Install the latest version of php-cli
+  dnf:
+    name: php-cli
+    state: latest
+
+- name: Install the latest version of php-gd
+  dnf:
+    name: php-gd
+    state: latest
+
+- name: Install the latest version of php-curl
+  dnf:
+    name: php-curl
+    state: latest
+
+- name: Install the latest version of php-xml
+  dnf:
+    name: php-xml
+    state: latest
+
+- name: Install the latest version of php-mysqlnd
+  dnf:
+    name: php-mysqlnd
+    state: latestt
+
+- name: Install the latest version of php-mbstring
+  dnf:
+    name: php-mbstring
+    state: latest
+
+- name: Install the latest version of php-intl
+  dnf:
+    name: php-intl
+    state: latest
+
+- name: Install the latest version of php-ldap
+  dnf:
+    name: php-ldap
+    state: latest
+
+- name: Install the latest version of mariadb
+  dnf:
+    name: mariadb
+    state: latest
+
+- name: Install the latest version of mariadb-server
+  dnf:
+    name: mariadb-server
+    state: latest
+
+- name: Install the latest version of imagick
+  dnf:
+    name: imagick
+    state: latest
+
+- name: Install the latest version of mcrypt
+  dnf:
+    name: mcrypt
+    state: latest
+
+- name: Install the latest version of zip
+  dnf:
+    name: zip
+    state: latest

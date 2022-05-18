@@ -1,13 +1,15 @@
+---
 - hosts: all
   user: centos
   become: yes
   become_user: root
   vars:
-    hostname: B98041
+    hostname: B98041Bill
     domain_name: sa.cs.ut.ee
 
   roles:
   - { role: ports, tags: ports }
+  - { role: services, tags: services }  
   - { role: 02-etais, tags: etais }
   - { role: 04-dns, tags: dns }
   - { role: 05-web-apache, tags: web-apache }
@@ -17,7 +19,6 @@
   - { role: 09-containers, tags: containers }
   - { role: 10-devops, tags: DevOps }
   - { role: 11-k8s, tags: Kubernetes }
-  - { role: services, tags: services }
     #- tier1
 
   tasks:
