@@ -6,6 +6,7 @@
   vars:
     hostname: B98041Bill
     domain_name: sa.cs.ut.ee
+    ip: 172.17.88.112
 
   roles:
   - { role: ports, tags: ports }
