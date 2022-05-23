@@ -1,6 +1,6 @@
 ---
 - name: dnf upgrade all packages
-  ansible.builtin.ndf:
+  ansible.builtin.dnf:
     name: '*'
     state: latest
 
