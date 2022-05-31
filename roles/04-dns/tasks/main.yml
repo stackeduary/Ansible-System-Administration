@@ -114,6 +114,54 @@
     group: named
     mode: '0700'
 
+- name: Create default in log directory
+  file:
+    path: /var/named/log/default
+    state: touch
+    owner: named
+    group: named
+    mode: '0640'
+
+- name: Create auth_servers in log directory
+  file:
+    path: /var/named/log/auth_servers
+    state: touch
+    owner: named
+    group: named
+    mode: '0640'
+
+- name: Create zone_transfers in log directory
+  file:
+    path: /var/named/log/zone_transfers
+    state: touch
+    owner: named
+    group: named
+    mode: '0640'
+
+- name: Create client_security in log directory
+  file:
+    path: /var/named/log/client_security
+    state: touch
+    owner: named
+    group: named
+    mode: '0640'
+
+- name: Create queries in log directory
+  file:
+    path: /var/named/log/queries
+    state: touch
+    owner: named
+    group: named
+    mode: '0640'
+
+- name: Create query-errors in log directory
+  file:
+    path: /var/named/log/query-errors
+    state: touch
+    owner: named
+    group: named
+    mode: '0640'
+
 - name: Inserts into resolv.conf
   template:
     src: resolv.conf.j2
@@ -122,7 +170,7 @@
     group: root
     mode: '0644'
   notify:
-    - Reload the named service in dns
+    - Reload the named service in DNS
 
 - name: Create DNS zone file
   template:
@@ -132,7 +180,7 @@
     group: named
     mode: '0640'
   notify:
-    - Reload the named service in dns
+    - Reload the named service in DNS
 
 - name: Create reverse mapping zone file
   template:
@@ -142,5 +190,14 @@
     group: named
     mode: '0640'
   notify:
-    - Reload the named service in dns
+    - Reload the named service in DNS
 
+- name: Create named.conf
+  template: 
+    src: named.conf.j2
+    dest: /etc/named.conf
+    owner: root
+    group: named
+    mode: '0644'
+  notify:
+    - Reload the named service in DNS

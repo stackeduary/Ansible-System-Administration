@@ -34,4 +34,8 @@
 - name: Install the latest version of dnf
   yum:
     name: dnf
-    state: latest    
+    state: latest
+
+- name: set timezone
+  community.general.timezone:
+    timezone: Europe/Tallinn

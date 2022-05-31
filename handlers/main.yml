@@ -1,5 +1,5 @@
 ---
-- name: Reload the named service in dns
+- name: Reload the named service in DNS
   systemd:
     name: named
     state: reloaded
