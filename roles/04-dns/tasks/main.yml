@@ -85,7 +85,7 @@
 - name: Create reverse mapping zone file
   template:
     src: reverse_zone.j2 
-    dest: "/etc/named/{{ reverse_zone }}.{{ domain_name }}"
+    dest: "/etc/named/reverse.{{ domain_name }}"
     owner: named
     group: named
     mode: '0640'
