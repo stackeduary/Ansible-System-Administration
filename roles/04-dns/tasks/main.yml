@@ -14,7 +14,6 @@
 - name: Print IP address
   debug: var=cloud_metadata.content
 
----
 - name: open port 53/TCP for DNS
 ansible.posix.firewalld:
   port: 53/tcp
