@@ -12,7 +12,40 @@
   register: cloud_metadata
 
 - name: Print IP address
-  debug: var=cloud_metadata.content  
+  debug: var=cloud_metadata.content
+
+---
+- name: open port 53/TCP for DNS
+ansible.posix.firewalld:
+  port: 53/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 53/UDP for DNS
+ansible.posix.firewalld:
+  port: 53/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 8301/TCP for Scoring
+ansible.posix.firewalld:
+  port: 8301/tcp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
+
+- name: open port 8301/UDP for Scoring
+ansible.posix.firewalld:
+  port: 8301/udp
+  permanent: yes
+  state: enabled
+notify:
+  - reload firewalld
 
 - name: Disable IPv6
   copy: 

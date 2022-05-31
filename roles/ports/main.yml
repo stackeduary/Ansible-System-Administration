@@ -13,7 +13,7 @@ ansible.posix.firewalld:
   permanent: yes
   state: enabled
 notify:
-  - reload firewalld  
+  - reload firewalld
 
 - name: open port 8301/TCP for Scoring
 ansible.posix.firewalld:
@@ -29,7 +29,7 @@ ansible.posix.firewalld:
   permanent: yes
   state: enabled
 notify:
-  - reload firewalld 
+  - reload firewalld
 
 - name: open port 80/TCP for HTTP
 ansible.posix.firewalld:
