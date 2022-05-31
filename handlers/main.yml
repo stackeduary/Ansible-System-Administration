@@ -1,27 +1,24 @@
+---
 - name: Reload the named service in dns
   systemd:
     name: named
     state: reloaded
     enabled: yes
-  listen: "reload named"
 
 - name: reload postfix
   systemd:
     named: postfix
     state: reloaded
     enabled: yes
-  listen: "reload postfix"
 
 - name: restart dovecot
   systemd:
     name: dovecot
     state: restarted
     enabled: yes
-  listen: "restart dovecot"
 
 - name: reload firewalld
   systemd:
     name: firewalld
     state: reloaded
     enabled: yes
-  listen: "reload firewalld"  
