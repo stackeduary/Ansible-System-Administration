@@ -74,7 +74,7 @@
 
 - name: Create DNS zone file
   template:
-    src: ../templates/zone.j2 
+    src: zone_file.j2 
     dest: "/etc/named/{{ hostname }}.{{ domain_name }}"
     owner: named
     group: named
@@ -84,7 +84,7 @@
 
 - name: Create reverse mapping zone file
   template:
-    src: ../templates/reverse_zone.j2 
+    src: reverse_zone.j2 
     dest: "/etc/named/{{ reverse_zone }}.{{ domain_name }}"
     owner: named
     group: named
