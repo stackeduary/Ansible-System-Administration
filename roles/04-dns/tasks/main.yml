@@ -169,8 +169,8 @@
     owner: root
     group: root
     mode: '0644'
-  notify:
-    - Reload the named service in DNS
+  # notify:
+  #   - Reload the named service in DNS
 
 - name: Create DNS zone file
   template:
@@ -179,8 +179,8 @@
     owner: root
     group: named
     mode: '0644'
-  notify:
-    - Reload the named service in DNS
+  # notify:
+  #   - Reload the named service in DNS
 
 - name: Create reverse mapping zone file
   template:
@@ -189,8 +189,8 @@
     owner: named
     group: named
     mode: '0644'
-  notify:
-    - Reload the named service in DNS
+  # notify:
+  #   - Reload the named service in DNS
 
 - name: Create named.conf
   template: 

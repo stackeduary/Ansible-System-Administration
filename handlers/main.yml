@@ -1,8 +1,14 @@
 ---
+# - name: Reload the named service in DNS
+#   systemd:
+#     name: named
+#     state: reloaded
+#     enabled: yes
+
 - name: Reload the named service in DNS
   systemd:
     name: named
-    state: reloaded
+    state: restarted
     enabled: yes
 
 - name: reload firewalld
