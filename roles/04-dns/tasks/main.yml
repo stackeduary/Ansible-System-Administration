@@ -192,6 +192,16 @@
   # notify:
   #   - Reload the named service in DNS
 
+# - name: Create named.conf
+#   template: 
+#     src: named.conf.j2
+#     dest: /etc/named.conf
+#     owner: root
+#     group: named
+#     mode: '0644'
+#   notify:
+#     - Reload the named service in DNS
+
 - name: Create named.conf
   template: 
     src: named.conf.j2
@@ -200,4 +210,4 @@
     group: named
     mode: '0644'
   notify:
-    - Reload the named service in DNS
+    - Restart named service

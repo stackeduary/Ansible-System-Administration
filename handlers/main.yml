@@ -5,7 +5,7 @@
 #     state: reloaded
 #     enabled: yes
 
-- name: Reload the named service in DNS
+- name: Restart named service
   systemd:
     name: named
     state: restarted
