@@ -80,7 +80,7 @@
     group: named
     mode: '0640'
   notify:
-    - restart named
+    - Reload the named service in dns
 
 - name: Create reverse mapping zone file
   template:
@@ -90,4 +90,4 @@
     group: named
     mode: '0640'
   notify:
-    - restart named    
+    - Reload the named service in dns 
