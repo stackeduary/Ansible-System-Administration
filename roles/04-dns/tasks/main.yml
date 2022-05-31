@@ -178,7 +178,7 @@
     dest: "/etc/named/{{ hostname }}.{{ domain_name }}"
     owner: root
     group: named
-    mode: '0640'
+    mode: '0644'
   notify:
     - Reload the named service in DNS
 
@@ -188,7 +188,7 @@
     dest: "/etc/named/reverse.{{ hostname }}.{{ domain_name }}"
     owner: named
     group: named
-    mode: '0640'
+    mode: '0644'
   notify:
     - Reload the named service in DNS
 
