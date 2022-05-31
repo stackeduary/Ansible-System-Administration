@@ -6,7 +6,7 @@
   vars:
     hostname: B98041Bill
     domain_name: sa.cs.ut.ee
-    ip: 172.17.88.112
+    ip_address: 172.17.88.112
     zone_serial: 0531202201
 
   roles:
