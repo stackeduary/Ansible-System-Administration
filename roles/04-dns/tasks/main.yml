@@ -90,4 +90,4 @@
     group: named
     mode: '0640'
   notify:
-    - Reload the named service in dns 
+    - Reload the named service in dns
