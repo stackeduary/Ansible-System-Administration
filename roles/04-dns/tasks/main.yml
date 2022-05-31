@@ -3,6 +3,12 @@
   dnf:
     autoremove: yes
 
+- name: add DNS service
+  firewalld:
+    service: dns
+    permanent: yes
+    state: enabled
+
 - name: Get OpenStack metadata
   uri:
     url: http://169.254.169.254/latest/meta-data/public-ipv4
@@ -45,6 +51,12 @@
     state: enabled
   notify:
     - reload firewalld
+
+- name: reload firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+    enabled: yes
 
 - name: Disable IPv6
   copy: 
@@ -92,7 +104,15 @@
 - name: Install the latest version of bind-utils
   yum:
     name: bind-utils
-    state: latest    
+    state: latest
+
+- name: Create log directory
+  file:
+    path: /var/named/log
+    state: directory
+    owner: named
+    group: named
+    mode: '0700'
 
 - name: Inserts into resolv.conf
   template:
@@ -108,7 +128,7 @@
   template:
     src: zone_file.j2 
     dest: "/etc/named/{{ hostname }}.{{ domain_name }}"
-    owner: named
+    owner: root
     group: named
     mode: '0640'
   notify:
@@ -123,3 +143,4 @@
     mode: '0640'
   notify:
     - Reload the named service in dns
+

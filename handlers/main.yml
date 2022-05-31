@@ -5,6 +5,12 @@
     state: reloaded
     enabled: yes
 
+- name: reload firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+    enabled: yes    
+
 - name: reload postfix
   systemd:
     named: postfix
@@ -15,10 +21,4 @@
   systemd:
     name: dovecot
     state: restarted
-    enabled: yes
-
-- name: reload firewalld
-  systemd:
-    name: firewalld
-    state: reloaded
     enabled: yes
