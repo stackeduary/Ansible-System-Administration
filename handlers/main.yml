@@ -17,4 +17,11 @@
     name: dovecot
     state: restarted
     enabled: yes
-  listen: "restart dovecot"  
+  listen: "restart dovecot"
+
+- name: reload firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+    enabled: yes
+  listen: "reload firewalld"  
