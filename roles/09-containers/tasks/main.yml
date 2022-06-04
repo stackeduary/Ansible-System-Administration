@@ -4,6 +4,25 @@
     name: yum-utils
     state: latest
 
+- name: create /etc/docker directory
+  file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: copy /etc/docker/daemon.json to /etc/docker
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add docker-ce repository
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
 - name: Install the latest version of docker
   yum:
     name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-compose-plugin']
