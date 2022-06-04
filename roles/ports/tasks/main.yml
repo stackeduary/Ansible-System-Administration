@@ -183,22 +183,6 @@
   notify:
     - reload firewalld
 
-- name: open port 50080/TCP for DNS
-  ansible.posix.firewalld:
-    port: 50080/tcp
-    permanent: yes
-    state: enabled
-  notify:
-    - reload firewalld
-
-- name: open port 50080/UDP for DNS
-  ansible.posix.firewalld:
-    port: 50080/udp
-    permanent: yes
-    state: enabled
-  notify:
-    - reload firewalld
-
 - name: open port 58080/TCP for DNS
   ansible.posix.firewalld:
     port: 58080/tcp
