@@ -150,16 +150,16 @@
     state: latest
 
 - name: Install the latest version of imagick
-  pecl:
-    name: imagick
+  community.general.pear:
+    name: pecl/imagick
     state: latest
 
 - name: Install the latest version of mcrypt
-  pecl:
-    name: mcrypt
+  community.general.pear:
+    name: pecl/mcrypt
     state: latest
 
 - name: Install the latest version of zip
-  pecl:
-    name: zip
+  community.general.pear:
+    name: pecl/zip
     state: latest
