@@ -2,3 +2,5 @@
 - name: Install k8s
   get_url: 
     url: curl -sfL https://get.k3s.io | -sh
+
+    

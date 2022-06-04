@@ -15,7 +15,7 @@
   - { role: ports, tags: ports }
   - { role: services, tags: services }  
   # - { role: 02-etais, tags: etais }
-  - { role: 04-dns, tags: dns }
+  # - { role: 04-dns, tags: dns }
   - { role: 05-web-apache, tags: web-apache }
   - { role: 06-email-smtp-imap, tags: email-smtp-imap }
   - { role: 07-tls, tags: tls }
@@ -26,5 +26,4 @@
     #- tier1
 
   tasks:
-  # - name: Testing this bitch out
-  #   debug: msg="Ansible is a savior and a bitch at the same time. I am {{ ansible_user_id }} on server {{ ansible_hostname }}"
+
