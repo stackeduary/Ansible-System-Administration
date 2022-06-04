@@ -12,7 +12,7 @@
     scoring_server: 172.17.66.134
 
   roles:
-  - { role: ports, tags: ports }
+  # - { role: ports, tags: ports }
   - { role: services, tags: services }  
   # - { role: 02-etais, tags: etais }
   # - { role: 04-dns, tags: dns }
