@@ -122,7 +122,7 @@
 - name: Install the latest version of php-mysqlnd
   dnf:
     name: php-mysqlnd
-    state: latestt
+    state: latest
 
 - name: Install the latest version of php-mbstring
   dnf:
