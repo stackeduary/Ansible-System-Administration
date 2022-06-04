@@ -4,22 +4,22 @@
     name: yum-utils
     state: latest
 
-- name: Install the latest version of docker-ce
+- name: Install the latest version of docker
   yum:
-    name: docker-ce
+    name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-compose-plugin']
     state: latest
 
-- name: Install the latest version of docker-ce-cli
-  yum:
-    name: docker-ce-cli
-    state: latest
+# - name: Install the latest version of docker-ce-cli
+#   yum:
+#     name: docker-ce-cli
+#     state: latest
 
-- name: Install the latest version of containerd.io
-  yum:
-    name: containerd.io
-    state: latest
+# - name: Install the latest version of containerd.io
+#   yum:
+#     name: containerd.io
+#     state: latest
 
-- name: Install the latest version of docker-compose-plugin
-  yum:
-    name: docker-compose-plugin
-    state: latest
+# - name: Install the latest version of docker-compose-plugin
+#   yum:
+#     name: docker-compose-plugin
+#     state: latest
