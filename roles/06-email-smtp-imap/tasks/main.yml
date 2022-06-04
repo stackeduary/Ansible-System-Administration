@@ -150,16 +150,16 @@
     state: latest
 
 - name: Install the latest version of imagick
-  dnf:
+  pecl:
     name: imagick
     state: latest
 
 - name: Install the latest version of mcrypt
-  dnf:
+  pecl:
     name: mcrypt
     state: latest
 
 - name: Install the latest version of zip
-  dnf:
+  pecl:
     name: zip
     state: latest
