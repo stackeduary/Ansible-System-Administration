@@ -5,21 +5,21 @@
     state: latest
 
 - name: Install the latest version of docker-ce
-  dnf:
+  yum:
     name: docker-ce
     state: latest
 
 - name: Install the latest version of docker-ce-cli
-  dnf:
+  yum:
     name: docker-ce-cli
     state: latest
 
 - name: Install the latest version of containerd.io
-  dnf:
+  yum:
     name: containerd.io
     state: latest
 
 - name: Install the latest version of docker-compose-plugin
-  dnf:
+  yum:
     name: docker-compose-plugin
     state: latest

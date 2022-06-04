@@ -16,10 +16,10 @@
   - { role: services, tags: services }  
   # - { role: 02-etais, tags: etais }
   # - { role: 04-dns, tags: dns }
-  - { role: 05-web-apache, tags: web-apache }
-  - { role: 06-email-smtp-imap, tags: email-smtp-imap }
-  - { role: 07-tls, tags: tls }
-  - { role: 08-filesystems, tags: filesystems }
+  # - { role: 05-web-apache, tags: web-apache }
+  # - { role: 06-email-smtp-imap, tags: email-smtp-imap }
+  # - { role: 07-tls, tags: tls }
+  # - { role: 08-filesystems, tags: filesystems }
   - { role: 09-containers, tags: containers }
   - { role: 10-devops, tags: DevOps }
   - { role: 11-k8s, tags: Kubernetes }
