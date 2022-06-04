@@ -7,7 +7,7 @@
 - name: Install the latest version of docker
   yum:
     name: ['docker-ce', 'docker-ce-cli', 'containerd.io', 'docker-compose-plugin']
-    state: latest
+    state: present
 
 # - name: Install the latest version of docker-ce-cli
 #   yum:
@@ -23,3 +23,9 @@
 #   yum:
 #     name: docker-compose-plugin
 #     state: latest
+
+- name: restart Docker
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
