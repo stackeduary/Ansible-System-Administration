@@ -26,7 +26,7 @@
     permanent: yes
     state: enabled
   notify:
-    - reload firewalld
+    - Reload firewalld service
 
 - name: open port 53/UDP for DNS
   ansible.posix.firewalld:
@@ -34,7 +34,7 @@
     permanent: yes
     state: enabled
   notify:
-    - reload firewalld
+    - Reload firewalld service
 
 - name: open port 8301/TCP for Scoring
   ansible.posix.firewalld:
@@ -42,7 +42,7 @@
     permanent: yes
     state: enabled
   notify:
-    - reload firewalld
+    - Reload firewalld service
 
 - name: open port 8301/UDP for Scoring
   ansible.posix.firewalld:
@@ -50,13 +50,13 @@
     permanent: yes
     state: enabled
   notify:
-    - reload firewalld
+    - Reload firewalld service
 
-- name: reload firewalld
-  systemd:
-    name: firewalld
-    state: reloaded
-    enabled: yes
+# - name: reload firewalld
+#   systemd:
+#     name: firewalld
+#     state: reloaded
+#     enabled: yes
 
 - name: Disable IPv6
   copy: 
@@ -169,8 +169,8 @@
     owner: root
     group: root
     mode: '0644'
-  # notify:
-  #   - Reload the named service in DNS
+  notify:
+    - Restart named service
 
 - name: Create DNS zone file
   template:
@@ -189,8 +189,8 @@
     owner: named
     group: named
     mode: '0644'
-  # notify:
-  #   - Reload the named service in DNS
+  notify:
+    - Restart named service
 
 # - name: Create named.conf
 #   template: 

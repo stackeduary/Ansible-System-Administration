@@ -1,0 +1,12 @@
+---
+- name: Restart named service
+  service: 
+    name: named
+    state: restarted
+    enabled: yes
+
+- name: Reload firewalld service
+  systemd: 
+    name: firewalld
+    state: reloaded
+    enabled: yes    
