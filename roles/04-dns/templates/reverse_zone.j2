@@ -2,11 +2,11 @@ $ORIGIN {{ reverse_ip }}.in-addr.arpa.   ; Zone starting point in the namespace 
                                          ; (if skipped, the origin is inferred by the DNS server
                                          ; based on zone declaration in name.conf.local file
 $TTL         15M                         ; Default expiration time for all resources
-@            IN          SOA      ns1.{{ hostname }}.{{ domain_name }}. root.{{ hostname }}.{{ domain_name }} (
+@            IN          SOA      ns1.{{ hostname }}.{{ domain_name }}. root.{{ hostname }}.{{ domain_name }}. (
              {{ zone_serial }}           ; serial
              15M                         ; refresh every 15 minutes
               5M                         ; retry every 5 minutes
           604800                         ; expire 7 days = 604800 seconds
              600)                        ; negative cache TTL
-@             IN         PTR       ns1.{{ hostname }}.{{ domain_name }}.     ; name server for b98041.sa.cs.ut.ee
+@             IN         NS       ns1.{{ hostname }}.{{ domain_name }}.     ; name server for b98041.sa.cs.ut.ee
 {{ last_octet }}            IN         PTR       ns1.{{ hostname }}.{{ domain_name }}.     ; 172.17.90.1 has name ns.b98041.sa.cs.ut.ee
