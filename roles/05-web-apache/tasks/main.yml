@@ -53,6 +53,11 @@
 #     name: netcat
 #     state: latest
 
+- name: Install the latest version of python3-mysqlclient
+  dnf:
+    name: python3-mysqlclient
+    state: latest
+
 - name: add HTTP service
   ansible.posix.firewalld:
     service: http
@@ -125,8 +130,9 @@
     group: root
     mode: '0644'
 
-- name: setsebool -P httpd_can_network_connect=1 proxy
-  command: setsebool -P httpd_can_network_connect=1 proxy
+- name: setsebool -P httpd_can_network_connect=1
+  shell: 
+    cmd: setsebool -P httpd_can_network_connect=1
 
 - name: Create proxy virtual host configuration file
   template:
@@ -157,7 +163,7 @@
     state: present
     host: 'localhost'
   ignore_errors: true
-  no_log: true
+  # no_log: true
 
 ############################################################
 - name: remove anonymous user account on localhost 
@@ -166,7 +172,7 @@
     state: absent
     host: localhost
     login_password: '{{ mysql_root_password }}'
-  no_log: true
+  # no_log: true
 
 - name: create Wordpress database
   mysql_db:
@@ -181,7 +187,7 @@
     login_password: '{{ mysql_root_password }}'
     priv: '*.*:ALL'
     host: localhost
-  no_log: true
+  # no_log: true
 
 - name: download Wordpress tarball
   get_url:
@@ -207,14 +213,14 @@
 
 - name: Create Wordpress virtual host configuration file
   template:
-    src: virtualhostword.j2
+    src: wordpress_virtual_host.j2
     dest: /etc/httpd/conf.d/wordpress.{{ hostname }}.conf
     owner: apache
     group: apache
     mode: '0644'
   notify: 
-  - restart httpd
-  - restart php-fpm
+  - Restart httpd service
+  - Restart php-fpm service
 
 - name: Create php-errors.log in var/log/httpd directory
   file:
