@@ -3,9 +3,9 @@
   dnf:
     autoremove: yes
 
-- name: pause
-  pause:
-    prompt: "Press [Enter] to continue..."
+# - name: pause
+#   pause:
+#     prompt: "Press [Enter] to continue..."
 
 - name: add DNS service
   firewalld:
