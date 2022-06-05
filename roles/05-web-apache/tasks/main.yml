@@ -118,7 +118,7 @@
     mode: '0644'
 
 - name: create proxy.service
-  template:
+  copy:
     src: proxy.service
     dest: /etc/systemd/system/proxy.service
     owner: root
