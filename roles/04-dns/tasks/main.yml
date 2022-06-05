@@ -95,6 +95,8 @@
     owner: root
     group: root
     mode: '0644'
+  notify:
+    Reboot a slow machine that might have lots of updates to apply    
 
 - name: Install the latest version of bind
   yum:
@@ -179,8 +181,8 @@
     owner: root
     group: named
     mode: '0644'
-  # notify:
-  #   - Reload the named service in DNS
+  notify:
+    - Restart named service
 
 - name: Create reverse mapping zone file
   template:
@@ -191,16 +193,6 @@
     mode: '0644'
   notify:
     - Restart named service
-
-# - name: Create named.conf
-#   template: 
-#     src: named.conf.j2
-#     dest: /etc/named.conf
-#     owner: root
-#     group: named
-#     mode: '0644'
-#   notify:
-#     - Reload the named service in DNS
 
 - name: Create named.conf
   template: 
