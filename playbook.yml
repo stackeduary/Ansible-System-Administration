@@ -7,7 +7,7 @@
     hostname: B98041Bill
     domain_name: sa.cs.ut.ee
     ip_address: 172.17.88.112
-    zone_serial: 2022060501
+    zone_serial: 2022060502
     reverse_ip: 88.17.172
     scoring_server: 172.17.66.134
     last_octet: 112
@@ -17,7 +17,7 @@
   # - { role: ports, tags: ports }
   - { role: services, tags: services }  
   # - { role: 02-etais, tags: etais }
-  # - { role: 04-dns, tags: dns }
+  - { role: 04-dns, tags: dns }
   - { role: 05-web-apache, tags: web-apache }
   # - { role: 06-email-smtp-imap, tags: email-smtp-imap }
   # - { role: 07-tls, tags: tls }
