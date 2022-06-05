@@ -17,4 +17,4 @@
 
 - name: increment serial
   shell: 
-    - awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}/{{ domain_name }}
+    - awk -i inplace '{ if ($0 ~ /Serial/ ) $1=$1+1; print}' /etc/named/{{ hostname }}/{{ domain_name }}
