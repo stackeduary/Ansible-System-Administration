@@ -10,6 +10,7 @@
     zone_serial: 2022060501
     reverse_ip: 88.17.172
     scoring_server: 172.17.66.134
+    last_octet: 112
 
   roles:
   # - { role: ports, tags: ports }

@@ -9,7 +9,4 @@ $TTL         15M                         ; Default expiration time for all resou
           604800                         ; expire 7 days = 604800 seconds
              600)                        ; negative cache TTL
 @             IN         PTR       ns1.{{ hostname }}.{{ domain_name }}.     ; name server for b98041.sa.cs.ut.ee
-1             IN         PTR       ns1.{{ hostname }}.{{ domain_name }}.     ; 172.17.90.1 has name ns.b98041.sa.cs.ut.ee
-5             IN         PTR       myhost.{{ hostname }}.{{ domain_name }}.  ; 172.17.90.5 has name myhost.b98041.sa.cs.ut.ee
-6             IN         PTR       mail.{{ hostname }}.{{ domain_name }}.    ; 172.17.90.6 has name mail.b98041.sa.cs.ut.ee
-7             IN         PTR       myhost2.{{ hostname }}.{{ domain_name }}. ; 172.17.90.7 has name myhost2.b98041.sa.cs.ut.ee
+{{ last_octet }}            IN         PTR       ns1.{{ hostname }}.{{ domain_name }}.     ; 172.17.90.1 has name ns.b98041.sa.cs.ut.ee
