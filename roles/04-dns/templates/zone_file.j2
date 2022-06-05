@@ -10,3 +10,8 @@ $TTL    15M
 @                      IN     A       {{ ip_address }}
 ns1                    IN     A       {{ ip_address }}
 {{ hostname }}         IN     A       {{ ip_address }}
+www                    IN     CNAME   {{ hostname }}.{{ domain_name }}.
+proxy                  IN     CNAME   {{ hostname }}.{{ domain_name }}.
+wordpress              IN     CNAME   {{ hostname }}.{{ domain_name }}.
+@                      IN     MX      10  mail
+

@@ -11,6 +11,7 @@
     reverse_ip: 88.17.172
     scoring_server: 172.17.66.134
     last_octet: 112
+    mysql_root_password: password
 
   roles:
   # - { role: ports, tags: ports }

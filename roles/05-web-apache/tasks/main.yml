@@ -69,7 +69,7 @@
     group: named
     mode: '0700'
 
-- name: Create /var/www/html/www.b98041/public_html/ directory
+- name: Create /var/www/html/www.{{ hostname }}/public_html/ directory
   file:
     path: /var/www/html/www.{{ hostname }}/public_html/
     state: directory
@@ -87,7 +87,7 @@
   notify:
     - Restart named service
 
-- name: remove all the content in welcome.conf
+- name: remove all the content in /etc/httpd/conf.d/welcome.conf
   copy:
     content: ''
     dest: /etc/httpd/conf.d/welcome.conf
@@ -128,9 +128,9 @@
 - name: setsebool -P httpd_can_network_connect=1 proxy
   command: setsebool -P httpd_can_network_connect=1 proxy
 
-- name: create virtual host for proxy 
+- name: Create proxy virtual host configuration file
   template:
-    src: virtual_host_proxy.j2
+    src: proxy_virtual_host.j2
     dest: /etc/httpd/conf.d/proxy.conf
     owner: root
     group: root
@@ -143,3 +143,124 @@
     name: proxy
     state: restarted
     enabled: yes
+
+- name: start mariadb
+  ansible.builtin.systemd:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: update mariadb root password
+  mysql_user:
+    name: root
+    password: '{{ mysql_root_password }}'
+    state: present
+    host: 'localhost'
+  ignore_errors: true
+  no_log: true
+
+############################################################
+- name: remove anonymous user account on localhost 
+  mysql_user:
+    name: ''
+    state: absent
+    host: localhost
+    login_password: '{{ mysql_root_password }}'
+  no_log: true
+
+- name: create Wordpress database
+  mysql_db:
+    name: wordpress
+    state: present
+    login_password: '{{ mysql_root_password }}'
+
+- name: create admin user 
+  mysql_user:
+    name: admin
+    password: '{{ mysql_root_password }}'
+    login_password: '{{ mysql_root_password }}'
+    priv: '*.*:ALL'
+    host: localhost
+  no_log: true
+
+- name: download Wordpress tarball
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/wordpress.tar.gz
+    mode: '0440'
+  
+- name: unzip wordpress
+  unarchive:
+    src: /tmp/wordpress.tar.gz
+    remote_src: yes
+    dest: /var/www/html
+    owner: apache
+    group: apache
+
+############################################################
+############################################################
+- name: sefcontext httpd_sys_rw_content_t
+  sefcontext:
+    target: '/var/www/html/wordpress'
+    setype: httpd_sys_rw_content_t
+    state: present
+
+- name: Create Wordpress virtual host configuration file
+  template:
+    src: virtualhostword.j2
+    dest: /etc/httpd/conf.d/wordpress.{{ hostname }}.conf
+    owner: apache
+    group: apache
+    mode: '0644'
+  notify: 
+  - restart httpd
+  - restart php-fpm
+
+- name: Create php-errors.log in var/log/httpd directory
+  file:
+    path: /var/log/httpd/php-errors.log
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create www-php-errors.log in var/log/httpd directory
+  file:
+    path: /var/log/httpd/www-php-errors.log
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create forensic log file in var/log/httpd directory
+  file:
+    path: /var/log/httpd/www.{{ hostname }}-forensic.log
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: update php-fpm configuration file
+  copy:
+    src: php-fpm.conf
+    dest: /etc/php-fpm.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: update www configuration file
+  copy:
+    src: www.conf
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add mod_security rules 
+  copy:
+    src: modsecurity_localrules.conf
+    dest: /etc/httpd/modsecurity.d/local_rules/modsecurity_localrules.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart httpd service
