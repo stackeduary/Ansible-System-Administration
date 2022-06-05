@@ -1,12 +1,3 @@
-//
-// named.conf
-//
-// Provided by Red Hat bind package to configure the ISC BIND named(8) DNS
-// server as a caching only nameserver (as a localhost DNS resolver only).
-//
-// See /usr/share/doc/bind*/sample/ for example named configuration files.
-//
-
 options {
         listen-on port 53 { any; };
         listen-on-v6 port 53 { none; };
@@ -16,18 +7,7 @@ options {
         memstatistics-file "/var/named/data/named_mem_stats.txt";
         secroots-file   "/var/named/data/named.secroots";
         recursing-file  "/var/named/data/named.recursing";
-        allow-query     { any; };
-
-        /* 
-         - If you are building an AUTHORITATIVE DNS server, do NOT enable recursion.
-         - If you are building a RECURSIVE (caching) DNS server, you need to enable 
-           recursion. 
-         - If your recursive DNS server has a public IP address, you MUST enable access 
-           control to limit queries to your legitimate users. Failing to do so will
-           cause your server to become part of large scale DNS amplification 
-           attacks. Implementing BCP38 within your network would greatly
-           reduce such attack surface 
-        */
+        allow-query { any; };
         recursion yes;
         also-notify { 172.17.66.134; };
 
@@ -39,7 +19,6 @@ options {
         pid-file "/run/named/named.pid";
         session-keyfile "/run/named/session.key";
 
-        /* https://fedoraproject.org/wiki/Changes/CryptoPolicy */
         include "/etc/crypto-policies/back-ends/bind.config";
 };
 
@@ -72,11 +51,6 @@ logging {
           print-severity yes;
           severity info;
      };
-//
-// If you have the category 'queries' defined, and you don't want query logging
-// by default, make sure you add option 'query log no;' - then you can toggle
-// query logging on (and off again) using command' rndc querylog'
-//
      channel queries_log {
           file "/var/named/log/queries" versions 600 size 20m;
           print-time yes;
@@ -84,13 +58,6 @@ logging {
           print-severity yes;
           severity info;
      };
-//
-// This channel is dynamic so that when the debug level is increased using
-// rndc while the server is running, extra information will be logged about
-// failing queries. Other debug information for other categories will be
-// sent to the channel default_debug (which is also dynamic), but without
-// affecting the regular logging.
-//
      channel query-errors_log {
           file "/var/named/log/query-errors" versions 5 size 20m;
           print-time yes;
@@ -98,13 +65,6 @@ logging {
           print-severity yes;
           severity dynamic;
      };
-//
-// This is the default Syslog channel, defined here for clarity. You don't
-// have to use it if you prefer to log to your own channels.
-// It sends to syslog daemon facility and sends only logged messages
-// of priority info and higher.
-// (The options to print time, category, and severity are non-default.)
-//
      channel default_syslog {
           print-time yes;
           print-category yes;
@@ -112,12 +72,6 @@ logging {
           syslog daemon;
           severity info;
      };
-//
-// This is the default debug output channel, defined here for clarity. You
-// might want to redefine the output destination if it doesn't fit with your
-// local system administration plans for logging. It is also a special
-// channel that only produces output if the debug level is non-zero.
-//
      channel default_debug {
           print-time yes;
           print-category yes;
@@ -125,49 +79,20 @@ logging {
           file "named.run";
           severity dynamic;
      };
-//
-// Log routine stuff to Syslog and default log:
-//
      category default { default_syslog; default_debug; default_log; };
      category config { default_syslog; default_debug; default_log; };
      category dispatch { default_syslog; default_debug; default_log; };
      category network { default_syslog; default_debug; default_log; };
      category general { default_syslog; default_debug; default_log; };
-//
-// Log messages relating to what we got back from authoritative servers during
-// recursion (if lame-servers and edns-disabled are obscuring other messages
-// they can be sent to their own channel or to null). Sometimes these log
-// messages will be useful to research why some domains don't resolve or
-//don't resolve reliably
-//
      category resolver { auth_servers_log; default_debug; };
      category cname { auth_servers_log; default_debug; };
      category delegation-only { auth_servers_log; default_debug; };
-//
-// Log together all messages relating to authoritative zone propagation
-//
      category notify { zone_transfers_log; default_debug; };
      category xfer-in { zone_transfers_log; default_debug; };
      category xfer-out { zone_transfers_log; default_debug; };
-//
-// Log together all messages relating to client access and security.
-// (There is an additional category 'unmatched' that is by default sent to
-// null but which can be added here if you want more than the one-line
-// summary that is logged for failures to match a view).
-//
      category client{ client_security_log; default_debug; };
      category security { client_security_log; default_debug; };
-//
-// If you have the category 'queries' defined, and you don't want query logging
-// by default, make sure you add option 'query log no;' - then you can toggle
-// query logging on (and off again) using command' rndc querylog'
-//
      category queries { queries_log; };
-//
-// This logging category will only emit messages at debug levels of 1 or
-// higher - it can be useful to troubleshoot problems where queries are
-// resulting in a SERVFAIL response.
-//
      category query-errors {query-errors_log; };
 };
 
