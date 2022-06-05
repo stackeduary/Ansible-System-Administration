@@ -14,3 +14,7 @@
 - name: Reboot a slow machine that might have lots of updates to apply
   reboot:
     reboot_timeout: 3600
+
+- name: increase zone_serial
+  shell: 
+    - awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}/{{ domain_name }}
