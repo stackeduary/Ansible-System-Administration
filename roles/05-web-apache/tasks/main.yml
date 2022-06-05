@@ -54,7 +54,7 @@
 #     state: latest
 
 - name: add HTTP service
-  firewalld:
+  ansible.posix.firewalld:
     service: http
     permanent: yes
     state: enabled
@@ -136,3 +136,10 @@
     group: root
     mode: '0644'
   notify: Restart httpd service
+
+- name: daemon reload start service 
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    name: proxy
+    state: restarted
+    enabled: yes
