@@ -164,7 +164,7 @@
     name: pecl/zip
     state: latest
 
-- name: overwrite main.cf
+- name: Overwrite main.cf
   template:
     src: main.cf.j2
     dest: /etc/postfix/main.cf
@@ -184,58 +184,262 @@
   shell:
     cmd: "echo -e 'Subject: You Should Hire Bill! \n\nYou should hire Bill at HPC! \nThis e-mail was sent by mailuser using the sendmail command in Bill's custom-made Postfix installation using his badass Ansible playbook. Hugs and kisses from {{ hostname }}@{{ domain_name }}!' | sendmail {{ email_recipient }}"
 
-- name: update 10-logging.conf
+- name: Update 10-logging.conf
   copy:
     src: 10-logging.conf
     dest: /etc/dovecot/conf.d/10-logging.conf
     owner: root
     group: root
     mode: '0644'
+  notify: Restart Dovecot service
 
-- name: update dovecot.conf
+- name: Update dovecot.conf
   copy:
     src: dovecot.conf
     dest: /etc/dovecot/dovecot.conf
     owner: root
     group: root
     mode: '0644'
+  notify: Restart Dovecot service    
 
-- name: update 10-auth.conf
+- name: Update 10-auth.conf
   copy:
     src: 10-auth.conf
     dest: /etc/dovecot/conf.d/10-auth.conf
     owner: root
     group: root
     mode: '0644'
+  notify: Restart Dovecot service    
 
-- name: update 10-mail.conf 
+- name: Update 10-mail.conf 
   copy:
     src: 10-mail.conf
     dest: /etc/dovecot/conf.d/10-mail.conf
     owner: root
     group: root
     mode: '0644'
+  notify: Restart Dovecot service   
 
-- name: update 15-mailboxes.conf
+- name: Update 15-mailboxes.conf
   copy:
     src: 15-mailboxes.conf
     dest: /etc/dovecot/conf.d/15-mailboxes.conf
     owner: root
     group: root
-    mode: '0644'    
+    mode: '0644'
+  notify: Restart Dovecot service    
 
-- name: update 10-master.conf
+- name: Update 10-master.conf
   copy:
     src: 10-master.conf
     dest: /etc/dovecot/conf.d/10-master.conf
     owner: root
     group: root
     mode: '0644'
+  notify: Restart Dovecot service    
     
-- name: update 10-ssl.conf
+- name: Update 10-ssl.conf
   copy:
     src: 10-ssl.conf
     dest: /etc/dovecot/conf.d/10-ssl.conf
     owner: root
     group: root
     mode: '0644'
+  notify: Restart Dovecot service  
+
+- name: Open port 25/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 25/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Open port 25/UDP for HTTP
+  ansible.posix.firewalld:
+    port: 25/udp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Open port 143/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 143/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Open port 143/UDP for HTTP
+  ansible.posix.firewalld:
+    port: 143/udp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Add mailuser
+  user:
+    name: mailuser
+    state: present
+    password: "{{ email_password|password_hash('sha256') }}"
+
+- name: Ensure that dovecot user is in the mail group
+  user:
+    name: "dovecot"
+    group: "mail"
+    append: yes
+
+- name: Update 10-mail.conf 
+  copy:
+    src: 10-mail.conf
+    dest: /etc/dovecot/conf.d/10-mail.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot service
+
+- name: Update master.cf
+  copy:
+    src: master.cf
+    dest: /etc/postfix/master.cf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Postfix service
+
+- name: dnf config-manager --set-enabled powertools
+  dnf:
+    enable_plugin: powertools
+
+- name: Create 20-imagick.ini file in /etc/php.d directory
+  file:
+    path: /etc/php.d/20-imagick.ini
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create 20-mcrypt.ini file in /etc/php.d directory
+  file:
+    path: /etc/php.d/20-mcrypt.ini
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create 20-zip.ini file in /etc/php.d directory
+  file:
+    path: /etc/php.d/20-zip.ini
+    state: touch
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Write the extension into 20-imagick.ini
+  lineinfile:
+    dest: "/etc/php.d/20-imagick.ini"
+    line: "extension=imagick.so"
+    state: present
+    create: yes
+  notify: 
+    - Restart mariadb service
+    - Restart php-fpm service
+    - Restart httpd service
+
+- name: Write the extension into 20-mcrypt.ini
+  lineinfile:
+    dest: "/etc/php.d/20-mcrypt.ini"
+    line: "extension=mcrypt.so"
+    state: present
+    create: yes
+  notify: 
+    - Restart mariadb service
+    - Restart php-fpm service
+    - Restart httpd service
+
+- name: Write the extension into 20-zip.ini
+  lineinfile:
+    dest: "/etc/php.d/20-zip.ini"
+    line: "extension=zip.so"
+    state: present
+    create: yes
+  notify: 
+    - Restart mariadb service
+    - Restart php-fpm service
+    - Restart httpd service
+
+- name: Create roundcubemail database
+  mysql_db:
+    name: roundcubemail
+    state: present
+    login_password: '{{ mysql_root_password }}'
+
+- name: Create roundcube user 
+  mysql_user:
+    name: roundcube
+    password: "{{ email_password|password_hash('sha256') }}"
+    login_password: '{{ mysql_root_password }}'
+    priv: 'roundcubemail.*:ALL'
+    host: localhost
+  
+- name: Download the Roundcube release
+  get_url:
+    url: https://github.com/roundcube/roundcubemail/releases/download/1.4.11/roundcubemail-1.4.11-complete.tar.gz
+    dest: /tmp/roundcube.tar.gz
+    mode: '0440'
+  
+- name: Unzip Roundcube
+  unarchive:
+    src: /tmp/roundcube.tar.gz
+    remote_src: yes
+    dest: /tmp
+    owner: apache
+    group: apache
+
+- name: Copy Roundcube to /var/www/html/roundcube
+  copy:
+    src: /tmp/roundcubemail-1.4.11/
+    remote_src: yes
+    directory_mode: yes
+    dest: /var/www/html/roundcubemail
+    owner: apache
+    group: apache
+    mode: '0755'
+
+- name: sefcontext httpd_sys_rw_content_t
+  sefcontext:
+    target: '/var/www/html/roundcubemail'
+    setype: httpd_sys_rw_content_t
+    state: present
+
+- name: Create a web server configuration for Roundcube
+  template:
+    src: roundcube_web_server_config.j2
+    dest: /etc/httpd/conf.d/mail.{{ hostname }}.conf
+    owner: apache
+    group: apache
+    mode: '0644'
+  notify: 
+    - Restart php-fpm service
+    - Restart httpd service
+
+- name: Create Roundcube PHP config file
+  template:
+    src: config.inc.php.j2
+    dest: /var/www/html/roundcubemail/config/config.inc.php
+    owner: apache
+    group: apache
+    mode: '0644'
+  notify:
+    - Restart php-fpm service
+    - Restart httpd service
+
+- name: Seed Roundcubemail database
+  mysql_db:
+    name: roundcubemail
+    state: import
+    login_password: '{{ mysql_root_password }}'
+    target: /var/www/html/roundcubemail/SQL/mysql.initial.sql
+  ignore_errors: true 

@@ -58,7 +58,7 @@
     name: python3-mysqlclient
     state: latest
 
-- name: add HTTP service
+- name: Add HTTP service
   ansible.posix.firewalld:
     service: http
     permanent: yes
@@ -92,7 +92,7 @@
   notify:
     - Restart named service
 
-- name: remove all the content in /etc/httpd/conf.d/welcome.conf
+- name: Remove all the content in /etc/httpd/conf.d/welcome.conf
   copy:
     content: ''
     dest: /etc/httpd/conf.d/welcome.conf
@@ -114,7 +114,7 @@
   user:
     name: proxy
 
-- name: copy website.py
+- name: Copy website.py
   copy:
     src: website.py
     dest: /usr/local/lib/server.py
@@ -122,7 +122,7 @@
     group: root 
     mode: '0644'
 
-- name: create proxy.service
+- name: Create proxy.service
   copy:
     src: proxy.service
     dest: /etc/systemd/system/proxy.service
@@ -143,20 +143,20 @@
     mode: '0644'
   notify: Restart httpd service
 
-- name: daemon reload start service 
+- name: Daemon reload start service 
   ansible.builtin.systemd:
     daemon_reload: yes
     name: proxy
     state: restarted
     enabled: yes
 
-- name: start mariadb
+- name: Start mariadb
   ansible.builtin.systemd:
     name: mariadb
     state: started
     enabled: yes
 
-- name: update mariadb root password
+- name: Update mariadb root password
   mysql_user:
     name: root
     password: '{{ mysql_root_password }}'
@@ -171,13 +171,13 @@
     host: localhost
     login_password: '{{ mysql_root_password }}'
 
-- name: create Wordpress database
+- name: Create Wordpress database
   mysql_db:
     name: wordpress
     state: present
     login_password: '{{ mysql_root_password }}'
 
-- name: create admin user 
+- name: Create admin user 
   mysql_user:
     name: admin
     password: '{{ mysql_root_password }}'
@@ -185,13 +185,13 @@
     priv: '*.*:ALL'
     host: localhost
 
-- name: download Wordpress tarball
+- name: Download Wordpress tarball
   get_url:
     url: https://wordpress.org/latest.tar.gz
     dest: /tmp/wordpress.tar.gz
     mode: '0440'
   
-- name: unzip wordpress
+- name: Unzip wordpress
   unarchive:
     src: /tmp/wordpress.tar.gz
     remote_src: yes
@@ -240,7 +240,7 @@
     group: root
     mode: '0755'
 
-- name: update php-fpm configuration file
+- name: u=Update php-fpm configuration file
   copy:
     src: php-fpm.conf
     dest: /etc/php-fpm.conf
@@ -248,7 +248,7 @@
     group: root
     mode: '0644'
 
-- name: update www configuration file
+- name: Update www configuration file
   copy:
     src: www.conf
     dest: /etc/php-fpm.d/www.conf
