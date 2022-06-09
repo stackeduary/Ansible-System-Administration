@@ -1,0 +1,57 @@
+---
+- name: Restart named service
+  service: 
+    name: named
+    state: restarted
+    enabled: yes
+
+- name: Reload firewalld service
+  systemd: 
+    name: firewalld
+    state: reloaded
+    enabled: yes
+    permanent: yes
+
+- name: Reboot a slow machine that might have lots of updates to apply
+  reboot:
+    reboot_timeout: 3600
+
+- name: increment serial
+  shell: 
+    cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}.{{ domain_name }}
+
+- name: Restart httpd service
+  service: 
+    name: httpd
+    state: restarted
+    enabled: yes
+
+- name: Restart proxy service
+  service: 
+    name: proxy
+    state: restarted
+    enabled: yes
+
+- name: Restart mariadb service
+  service: 
+    name: mariadb
+    state: restarted
+    enabled: yes
+
+- name: Restart php-fpm service
+  service: 
+    name: php-fpm
+    state: restarted
+    enabled: yes
+
+- name: Restart Postfix service
+  service: 
+    name: postfix
+    state: restarted
+    enabled: yes
+
+- name: Restart Dovecot service
+  service: 
+    name: dovecot
+    state: restarted
+    enabled: yes        

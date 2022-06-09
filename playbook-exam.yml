@@ -4,22 +4,20 @@
   become: yes
   become_user: root
   vars:
-    hostname: B98041Bill
-    domain_name: sa.cs.ut.ee
-    ip_address: 172.17.88.112
-    zone_serial: 2022060502
-    reverse_ip: 88.17.172
-    scoring_server: 172.17.66.134
-    last_octet: 112
+    hostname: b98041s
+    domain_name: sysadexam.cs.ut.ee
+    ip_address: 172.17.90.187
+    zone_serial: 2022060701
+    reverse_ip: 90.17.172
+    scoring_server: 172.17.66.228
+    last_octet: 187
     mysql_root_password: password
-    email_password: HireBill2022
-    email_recipient: nagios@scoring.sa.cs.ut.ee
 
   roles:
   # - { role: ports, tags: ports } 
-  # - { role: 02-etais, tags: etais }
-  # - { role: 04-dns, tags: dns }
-  # - { role: 05-web-apache, tags: web-apache }
+  - { role: 02-etais, tags: etais }
+  - { role: 04-dns, tags: dns }
+  - { role: 05-web-apache, tags: web-apache }
   - { role: 06-email-smtp-imap, tags: email-smtp-imap }
   # - { role: 07-tls, tags: tls }
   # - { role: 08-filesystems, tags: filesystems }

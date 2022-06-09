@@ -1,0 +1,6 @@
+[localhost]
+
+localhost
+
+[SysAdmin]
+centos@172.17.90.187 ansible_user=centos

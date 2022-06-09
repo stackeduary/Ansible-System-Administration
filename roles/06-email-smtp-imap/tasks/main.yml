@@ -163,3 +163,79 @@
   community.general.pear:
     name: pecl/zip
     state: latest
+
+- name: overwrite main.cf
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Postfix service
+
+- name: Add mailuser
+  user:
+    name: mailuser
+    state: present
+    password: "{{ email_password|password_hash('sha256') }}"
+
+- name: Email nagios@scoring.sa.cs.ut.ee
+  become_user: mailuser
+  shell:
+    cmd: "echo -e 'Subject: You Should Hire Bill! \n\nYou should hire Bill at HPC! \nThis e-mail was sent by mailuser using the sendmail command in Bill's custom-made Postfix installation using his badass Ansible playbook. Hugs and kisses from {{ hostname }}@{{ domain_name }}!' | sendmail {{ email_recipient }}"
+
+- name: update 10-logging.conf
+  copy:
+    src: 10-logging.conf
+    dest: /etc/dovecot/conf.d/10-logging.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: update dovecot.conf
+  copy:
+    src: dovecot.conf
+    dest: /etc/dovecot/dovecot.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: update 10-auth.conf
+  copy:
+    src: 10-auth.conf
+    dest: /etc/dovecot/conf.d/10-auth.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: update 10-mail.conf 
+  copy:
+    src: 10-mail.conf
+    dest: /etc/dovecot/conf.d/10-mail.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: update 15-mailboxes.conf
+  copy:
+    src: 15-mailboxes.conf
+    dest: /etc/dovecot/conf.d/15-mailboxes.conf
+    owner: root
+    group: root
+    mode: '0644'    
+
+- name: update 10-master.conf
+  copy:
+    src: 10-master.conf
+    dest: /etc/dovecot/conf.d/10-master.conf
+    owner: root
+    group: root
+    mode: '0644'
+    
+- name: update 10-ssl.conf
+  copy:
+    src: 10-ssl.conf
+    dest: /etc/dovecot/conf.d/10-ssl.conf
+    owner: root
+    group: root
+    mode: '0644'

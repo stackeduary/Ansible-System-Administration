@@ -38,4 +38,4 @@
 
 - name: set timezone
   community.general.timezone:
-    timezone: Europe/Tallinn
+    name: "Europe/Tallinn"
