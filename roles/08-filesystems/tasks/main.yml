@@ -142,9 +142,9 @@
 - name: Add line to /etc/exports
   lineinfile:
     path: /etc/exports
-    line: "/shares/nfs localhost"
+    line: "/shares/nfs 127.0.0.1"
     state: present
-    Create: yes
+    create: yes
   notify: Run exportfs -a command
 
 - name: flush handlers
@@ -216,11 +216,11 @@
   notify: 
   - Restart SMB service
 
-- name: /usr/local/bin/consul kv put object/{{ hostname }} {{ kv_pass }}
-  shell: /usr/local/bin/consul kv put object/{{ hostname }} {{ kv_pass }}
+- name: /usr/local/bin/consul kv put object/{{ hostname }} {{ key_value_password }}
+  shell: /usr/local/bin/consul kv put object/{{ hostname }} {{ key_value_password }}
 
 - name: Add a configured host
-  shell: mc config host add scoring https://scoring.sa.cs.ut.ee:9000 {{ hostname }} {{ kv_pass }}
+  shell: mc config host add scoring https://scoring.sa.cs.ut.ee:9000 {{ hostname }} {{ key_value_password }}
 
 - name: Create bucket
   shell: mc mb scoring/{{ hostname }}
