@@ -34,20 +34,20 @@
     name: make
     state: latest
 
-- name: Install the latest version of ImageMagick
+- name: Install ImageMagick
   dnf:
     name: ImageMagick
-    state: latest
+    # state: latest
 
-- name: Install the latest version of ImageMagick-devel
+- name: Install ImageMagick-devel
   dnf:
     name: ImageMagick-devel
-    state: latest
+    # state: latest
 
-- name: Install the latest version of ImageMagick-perl
+- name: Install ImageMagick-perl
   dnf:
     name: ImageMagick-perl
-    state: latest
+    # state: latest
 
 - name: Install the latest version of pcre-devel
   dnf:
@@ -180,9 +180,14 @@
     password: "{{ email_password|password_hash('sha256') }}"
 
 - name: Email nagios@scoring.sa.cs.ut.ee
+  become: true
   become_user: mailuser
   shell:
-    cmd: "echo -e 'Subject: You Should Hire Bill! \n\nYou should hire Bill at HPC! \nThis e-mail was sent by mailuser using the sendmail command in Bill's custom-made Postfix installation using his badass Ansible playbook. Hugs and kisses from {{ hostname }}@{{ domain_name }}!' | sendmail {{ email_recipient }}"
+    cmd: 'echo -e "Subject: You Should Hire Bill! \n\nYou should hire Bill at HPC! \nThis e-mail was sent by mailuser using the sendmail command in Bill&apos;s custom-made Postfix installation using his badass Ansible playbook. Hugs and kisses from {{ item }}@{{ item }}!" | sendmail {{ item }}'
+  with_items:
+    - hostname
+    - domain_name
+    - email_recipient
 
 - name: Update 10-logging.conf
   copy:

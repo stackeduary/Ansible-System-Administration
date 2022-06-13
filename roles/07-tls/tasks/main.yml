@@ -3,8 +3,139 @@
   dnf:
     name: mod_ssl
     state: latest
+  notify: Reload httpd service
 
 - name: Install the latest version of cyrus-sasl-plain
   dnf:
     name: cyrus-sasl-plain
     state: latest
+  notify: Reload httpd service
+
+- name: open port 443/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 443/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: open port 443/UDP for HTTP
+  ansible.posix.firewalld:
+    port: 443/udp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: open port 465/TCP for SMTP
+  ansible.posix.firewalld:
+    port: 465/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: open port 465/UDP for SMTP
+  ansible.posix.firewalld:
+    port: 465/udp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: open port 993/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 993/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: open port 993/UDP for HTTP
+  ansible.posix.firewalld:
+    port: 993/udp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Copy www_server.crt
+  copy:
+    src: www_server.crt
+    dest: /etc/pki/tls/certs/www_server.crt
+  notify: Reload httpd service
+
+- name: Copy www_server.key
+  copy:
+    src: www_server.key
+    dest: /etc/pki/tls/private/www_server.key
+  notify: Reload httpd service
+
+- name: Copy cacert.crt
+  copy:
+    src: cacert.crt
+    dest: /etc/pki/tls/certs/cacert.crt
+  notify: Reload httpd service
+
+- name: Copy Apache virtual host configuration file
+  template:
+    src: apache_virtual_host.j2 
+    dest: /etc/httpd/conf.d/www.{{ hostname }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart httpd service
+
+- name: Copy proxy virtual host configuration file
+  template:
+    src: proxy_virtual_host.j2
+    dest: /etc/httpd/conf.d/proxy.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart httpd service
+
+- name: Copy Wordpress virtual host configuration file
+  template:
+    src: wordpress_virtual_host.j2
+    dest: /etc/httpd/conf.d/wordpress.{{ hostname }}.conf
+    owner: apache
+    group: apache
+    mode: '0644'
+  notify: 
+  - Restart httpd service
+
+- name: Include https in firewalld service
+  firewalld:
+    service: https
+    permanent: yes
+    state: enabled
+  notify: Reload firewalld service
+
+- name: Overwrite main.cf
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Postfix service
+
+- name: Update master.cf 
+  copy:
+    src: master.cf
+    dest: /etc/postfix/master.cf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Postfix service
+
+- name: Update 10-ssl.conf file
+  copy:
+    src: 10-ssl.conf 
+    dest: /etc/dovecot/conf.d/10-ssl.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot service

@@ -1,10 +1,4 @@
 ---
-- name: Restart named service
-  service: 
-    name: named
-    state: restarted
-    enabled: yes
-
 - name: Reload firewalld service
   systemd: 
     name: firewalld
@@ -19,24 +13,6 @@
 - name: Restart httpd service
   service: 
     name: httpd
-    state: restarted
-    enabled: yes
-
-- name: Restart proxy service
-  service: 
-    name: proxy
-    state: restarted
-    enabled: yes
-
-- name: Restart mariadb service
-  service: 
-    name: mariadb
-    state: restarted
-    enabled: yes
-
-- name: Restart php-fpm service
-  service: 
-    name: php-fpm
     state: restarted
     enabled: yes
 
