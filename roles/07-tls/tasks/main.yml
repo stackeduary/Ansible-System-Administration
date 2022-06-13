@@ -3,13 +3,13 @@
   dnf:
     name: mod_ssl
     state: latest
-  notify: Reload httpd service
+  notify: Restart httpd service
 
 - name: Install the latest version of cyrus-sasl-plain
   dnf:
     name: cyrus-sasl-plain
     state: latest
-  notify: Reload httpd service
+  notify: Restart httpd service
 
 - name: open port 443/TCP for HTTP
   ansible.posix.firewalld:
@@ -63,19 +63,19 @@
   copy:
     src: www_server.crt
     dest: /etc/pki/tls/certs/www_server.crt
-  notify: Reload httpd service
+  notify: Restart httpd service
 
 - name: Copy www_server.key
   copy:
     src: www_server.key
     dest: /etc/pki/tls/private/www_server.key
-  notify: Reload httpd service
+  notify: Restart httpd service
 
 - name: Copy cacert.crt
   copy:
     src: cacert.crt
     dest: /etc/pki/tls/certs/cacert.crt
-  notify: Reload httpd service
+  notify: Restart httpd service
 
 - name: Copy Apache virtual host configuration file
   template:
