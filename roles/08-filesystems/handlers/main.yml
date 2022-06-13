@@ -1,0 +1,24 @@
+---
+- name: Reload firewalld service
+  systemd: 
+    name: firewalld
+    state: reloaded
+    enabled: yes
+    permanent: yes
+
+- name: Restart nfs-server service
+  systemd: 
+    name: nfs-server
+    state: restarted
+    enabled: yes
+    permanent: yes
+
+- name: Restart SMB service
+  systemd: 
+    name: smb
+    state: restarted
+    enabled: yes
+    permanent: yes
+
+- name: Run exportfs -a command
+  command: exportfs -a
