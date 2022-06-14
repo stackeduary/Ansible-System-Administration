@@ -17,15 +17,22 @@
 
 - name: Copy traefik-config to the /var/lib/rancher/k3s/server/manifests directory
   copy: 
-    src: traefik-config
+    src: traefik-config.yml
     dest: /var/lib/rancher/k3s/server/manifests
     owner: root
     group: root
     mode: '0755'
 
-- name: Install k3s
-  get_url: 
-    url: curl -sfL https://get.k3s.io | -sh
+# - name: Install k3s
+#   get_url: 
+#     url: curl -sfL https://get.k3s.io | -sh
+
+- name: Install k3s 
+  shell: 
+    warn: false
+    cmd: "curl -sfL https://get.k3s.io | sh -s -"
+  register: k3s_install
+  changed_when: "'No change detected so skipping service start' not in k3s_install.stdout"
 
 - name: Install openshift
   pip: 

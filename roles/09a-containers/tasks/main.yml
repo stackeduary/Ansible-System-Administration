@@ -9,7 +9,8 @@
 
 - name: Create /home/centos/docker_lab directory
   file:
-    path: /home/centos/docker_lab
+    # path: /home/centos/docker_lab
+    path: ~/docker_lab
     state: directory
     owner: root
     group: root
@@ -18,7 +19,8 @@
 - name: Copy server.py to the docker_lab directory
   copy: 
     src: server.py
-    dest: /home/centos/docker_lab/server.py
+    # dest: /home/centos/docker_lab/server.py
+    dest: ~/docker_lab/server.py
     owner: root
     group: root
     mode: '0755'
@@ -26,7 +28,8 @@
 - name: Copy Dockerfile to the docker_lab directory
   copy: 
     src: Dockerfile
-    dest: /home/centos/docker_lab/Dockerfile
+    dest: ~/docker_lab/Dockerfile
+    # dest: /home/centos/docker_lab/Dockerfile    
     owner: root
     group: root
     mode: '0755'
@@ -35,7 +38,8 @@
   docker_image:
     name: docker_lab
     build:
-      path: /home/centos/docker_lab
+      # path: /home/centos/docker_lab
+      path: ~/docker_lab
       pull: no
     source: build
 

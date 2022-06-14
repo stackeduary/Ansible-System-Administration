@@ -89,7 +89,7 @@
 
 - name: Create /mnt/nfs directory
   file:
-    path: /mnt/nfs
+    path: ~/mnt/nfs
     state: directory
     owner: root
     group: root
@@ -142,7 +142,8 @@
 - name: Add line to /etc/exports
   lineinfile:
     path: /etc/exports
-    line: "/shares/nfs 127.0.0.1"
+    # line: "/shares/nfs 127.0.0.1"
+    line: "/shares/nfs      localhost(rw)"
     state: present
     create: yes
   notify: Run exportfs -a command
@@ -164,12 +165,16 @@
     path: /lab7/fs-xfs
     fstype: xfs
 
+# - name: pause
+#   pause:
+#     prompt: "Press [Enter] to continue..."
+
 - name: Mount NFS filesystem
   ansible.posix.mount:
     src: "{{ hostname }}.{{ domain_name }}:/shares/nfs"
-    path: /mnt/nfs
+    path: ~/mnt/nfs
     fstype: nfs
-    state: mounted
+    state: mounted    
 
 - name: Create SAMBA group
   ansible.builtin.group:
@@ -223,13 +228,17 @@
 - name: /usr/local/bin/consul kv put object/{{ hostname }} {{ key_value_password }}
   shell: /usr/local/bin/consul kv put object/{{ hostname }} {{ key_value_password }}
 
-- name: Add a configured host
-  shell: mc config host add scoring https://scoring.sa.cs.ut.ee:9000 {{ hostname }} {{ key_value_password }}
+# - name: Add a configured host
+#   shell: mc config host add scoring https://scoring.sa.cs.ut.ee:9000 {{ hostname }} {{ key_value_password }}
+
+- name: pause
+  pause:
+    prompt: "Press [Enter] to continue..."
 
 - name: Create bucket
   shell: mc mb scoring/{{ hostname }}
   register: output 
-  changed_when: '"Bucket Created successfully" in output.stdout'
+  changed_when: '"Bucket created successfully" in output.stdout'
   ignore_errors: true
 
 - name: Create scoringtestfile
@@ -237,7 +246,7 @@
     path: /tmp/scoringtestfile
     line: "{{ hostname }}"
     state: present
-    Create: yes
+    create: yes
 
 - name: Copy local file to remote bucket
   shell: mc cp /tmp/scoringtestfile scoring/{{ hostname }}/scoringtestfile

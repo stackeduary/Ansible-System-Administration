@@ -24,15 +24,15 @@
 
   roles:
   # - { role: ports, tags: ports } 
-  - { role: 02-etais, tags: etais }
-  - { role: 04-dns, tags: dns }
-  - { role: 05-web-apache, tags: web-apache }
-  - { role: 06-email-smtp-imap, tags: email-smtp-imap }
-  - { role: 07-tls, tags: tls }
-  - { role: 08-filesystems, tags: filesystems }
-  - { role: 09-containers, tags: containers-i }
-  - { role: 09a-containers, tags: containers-ii }
-  - { role: 10-devops, tags: DevOps }
+  # - { role: 02-etais, tags: etais }
+  # - { role: 04-dns, tags: dns }
+  # - { role: 05-web-apache, tags: web-apache }
+  # - { role: 06-email-smtp-imap, tags: email-smtp-imap }
+  # - { role: 07-tls, tags: tls }
+  # - { role: 08-filesystems, tags: filesystems }
+  # - { role: 09-containers, tags: containers-i }
+  # - { role: 09a-containers, tags: containers-ii }
+  # - { role: 10-devops, tags: DevOps }
   - { role: 11-k8s-idempotent, tags: Kubernetes }
   - { role: 11a-k8s-nonidempotent, tags: Kubernetes }
     #- tier1
