@@ -1,0 +1,66 @@
+---
+- name: open port 6443/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 6443/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Create /var/lib/rancher/k3s/server/manifests directory
+  file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy traefik-config to the /var/lib/rancher/k3s/server/manifests directory
+  copy: 
+    src: traefik-config
+    dest: /var/lib/rancher/k3s/server/manifests
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Install k3s
+  get_url: 
+    url: curl -sfL https://get.k3s.io | -sh
+
+- name: Install openshift
+  pip: 
+    name: openshift
+    state: present
+
+- name: Install pyyaml
+  pip: 
+    name: pyyaml
+    state: present
+
+- name: Install kubernetes
+  pip: 
+    name: kubernetes
+    state: present
+
+- name: Create /root/.kube directory
+  file:
+    path: /root/.kube 
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy /etc/rancher/k3s/k3s.yaml to the /root/.kube/config directory
+  copy: 
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /root/.kube/config
+    owner: root
+    group: root
+    mode: '0644'
+    remote_src: yes
+
+- name: Start k3s service
+  service:
+    name: k3s
+    state: restarted
+    enabled: yes

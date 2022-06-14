@@ -33,7 +33,8 @@
   - { role: 09-containers, tags: containers-i }
   - { role: 09a-containers, tags: containers-ii }
   - { role: 10-devops, tags: DevOps }
-  - { role: 11-k8s, tags: Kubernetes }
+  - { role: 11-k8s-idempotent, tags: Kubernetes }
+  - { role: 11a-k8s-nonidempotent, tags: Kubernetes }
     #- tier1
 
   # tasks:
