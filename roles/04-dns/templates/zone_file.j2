@@ -1,7 +1,7 @@
 ; BIND data file for local zone b98041.sa.cs.ut.ee;
 $TTL    15M
 @       IN      SOA     ns1.{{ hostname }}.{{ domain_name }}. root.{{ hostname }}.{{ domain_name }}. (
-                     2022060501   ; Serial
+              {{ zone_serial }}   ; Serial
                             15M   ; Refresh
                              5M   ; Retry
                            120M   ; Expire
@@ -14,4 +14,5 @@ www                    IN     CNAME   {{ hostname }}.{{ domain_name }}.
 proxy                  IN     CNAME   {{ hostname }}.{{ domain_name }}.
 wordpress              IN     CNAME   {{ hostname }}.{{ domain_name }}.
 @                      IN     MX      10  mail
+container-proxy        IN     CNAME   {{ hostname }}
 

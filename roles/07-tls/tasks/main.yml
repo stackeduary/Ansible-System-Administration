@@ -139,3 +139,32 @@
     group: root
     mode: '0644'
   notify: Restart Dovecot service
+
+- name: Reload firewalld service
+  systemd: 
+    name: firewalld
+    state: reloaded
+    enabled: yes
+    permanent: yes
+
+- name: increment serial
+  shell: 
+    cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}.{{ domain_name }}
+
+- name: Restart httpd service
+  service: 
+    name: httpd
+    state: restarted
+    enabled: yes
+
+- name: Restart Postfix service
+  service: 
+    name: postfix
+    state: restarted
+    enabled: yes
+
+- name: Restart Dovecot service
+  service: 
+    name: dovecot
+    state: restarted
+    enabled: yes

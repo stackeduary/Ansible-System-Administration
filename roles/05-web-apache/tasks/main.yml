@@ -66,6 +66,22 @@
   notify:
     - Reload firewalld service
 
+- name: open port 80/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 80/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: open port 80/UDP for HTTP
+  ansible.posix.firewalld:
+    port: 80/udp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
 - name: Create /var/www/ directory
   file:
     path: /var/www/
@@ -264,3 +280,15 @@
     group: root
     mode: '0644'
   notify: Restart httpd service
+
+- name: Restart named
+  service:
+    name: named
+    state: restarted
+    enabled: yes
+
+- name: Restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+    enabled: yes

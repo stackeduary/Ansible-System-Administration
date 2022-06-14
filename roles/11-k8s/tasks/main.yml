@@ -3,4 +3,10 @@
   get_url: 
     url: curl -sfL https://get.k3s.io | -sh
 
-    
+- name: open port 6443/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 6443/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service

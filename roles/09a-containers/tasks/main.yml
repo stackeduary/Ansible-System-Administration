@@ -1,0 +1,81 @@
+---
+- name: open port 5005/TCP for HTTP
+  ansible.posix.firewalld:
+    port: 5005/tcp
+    permanent: yes
+    state: enabled
+  notify:
+    - Reload firewalld service
+
+- name: Create /home/centos/docker_lab directory
+  file:
+    path: /home/centos/docker_lab
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy server.py to the docker_lab directory
+  copy: 
+    src: server.py
+    dest: /home/centos/docker_lab/server.py
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy Dockerfile to the docker_lab directory
+  copy: 
+    src: Dockerfile
+    dest: /home/centos/docker_lab/Dockerfile
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Build the Docker image
+  docker_image:
+    name: docker_lab
+    build:
+      path: /home/centos/docker_lab
+      pull: no
+    source: build
+
+- name: create Docker network 
+  docker_network:
+    name: docker_lab
+    ipam_config:
+    - subnet: "{{ docker.network.subnet }}"
+      iprange: "{{ docker.network.iprange }}"
+      gateway: "{{ docker.network.gateway }}"
+    driver: bridge
+
+- name: Create whoami container 
+  docker_container:
+    name: whoami
+    image: registry.hpc.ut.ee/mirror/containous/whoami
+    pull: yes 
+    restart_policy: always
+
+- name: Run docker run command
+  docker_container:
+    name: docker_lab
+    image: docker_lab
+    hostname: docker-lab
+    pull: no
+    networks_cli_compatible: yes
+    restart_policy: always
+    networks:
+    - name: docker_lab
+      ipv4_address: "{{ docker.container_ip }}"
+    exposed_ports:
+      - '5000'
+    ports: 
+      - '5005:5000'
+
+- name: Create container-proxy virtual host configuration file
+  template:
+    src: proxy_virtual_host.j2
+    dest: /etc/httpd/conf.d/container-proxy.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart httpd service

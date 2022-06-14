@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+    ServerName container-proxy.{{ hostname }}.{{ domain_name }} 
+    # ServerName sets the name to listen for with requests
+    ErrorLog /var/log/httpd/proxy-error_log
+    CustomLog /var/log/httpd/proxy-access_log common
+
+    ProxyPreserveHost On
+
+    ProxyPass / http://{{ docker.container_ip }}:5000/
+    ProxyPassReverse / http://{{ docker.container_ip }}:5000/
+</VirtualHost>
