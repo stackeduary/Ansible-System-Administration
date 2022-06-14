@@ -1,8 +1,8 @@
 ---
-- name: dnf upgrade all packages
-  ansible.builtin.dnf:
-    name: '*'
-    state: latest
+# - name: dnf upgrade all packages
+#   ansible.builtin.dnf:
+#     name: '*'
+#     state: latest
 
 - name: Add user scoring
   user:

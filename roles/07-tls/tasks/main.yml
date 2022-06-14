@@ -59,17 +59,29 @@
   notify:
     - Reload firewalld service
 
-- name: Copy www_server.crt
+- name: Copy server.crt
   copy:
-    src: www_server.crt
-    dest: /etc/pki/tls/certs/www_server.crt
+    src: server.crt
+    dest: /etc/pki/tls/certs/server.crt
   notify: Restart httpd service
 
-- name: Copy www_server.key
+- name: Copy server.key
   copy:
-    src: www_server.key
-    dest: /etc/pki/tls/private/www_server.key
+    src: server.key
+    dest: /etc/pki/tls/private/server.key
   notify: Restart httpd service
+
+# - name: Copy www_server.crt
+#   copy:
+#     src: www_server.crt
+#     dest: /etc/pki/tls/certs/www_server.crt
+#   notify: Restart httpd service
+
+# - name: Copy www_server.key
+#   copy:
+#     src: www_server.key
+#     dest: /etc/pki/tls/private/www_server.key
+#   notify: Restart httpd service  
 
 - name: Copy cacert.crt
   copy:
@@ -140,31 +152,31 @@
     mode: '0644'
   notify: Restart Dovecot service
 
-- name: Reload firewalld service
-  systemd: 
-    name: firewalld
-    state: reloaded
-    enabled: yes
-    permanent: yes
+# - name: Reload firewalld service
+#   systemd: 
+#     name: firewalld
+#     state: reloaded
+#     enabled: yes
+#     # permanent: yes
 
-- name: increment serial
-  shell: 
-    cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}.{{ domain_name }}
+# - name: increment serial
+#   shell: 
+#     cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}.{{ domain_name }}
 
-- name: Restart httpd service
-  service: 
-    name: httpd
-    state: restarted
-    enabled: yes
+# - name: Restart httpd service
+#   service: 
+#     name: httpd
+#     state: restarted
+#     enabled: yes
 
-- name: Restart Postfix service
-  service: 
-    name: postfix
-    state: restarted
-    enabled: yes
+# - name: Restart Postfix service
+#   service: 
+#     name: postfix
+#     state: restarted
+#     enabled: yes
 
-- name: Restart Dovecot service
-  service: 
-    name: dovecot
-    state: restarted
-    enabled: yes
+# - name: Restart Dovecot service
+#   service: 
+#     name: dovecot
+#     state: restarted
+#     enabled: yes

@@ -198,7 +198,7 @@
     mode: '0644'
   notify:
     - Restart named service
-    - Increment serial
+    - Increment reverse mapping zone file serial
 
 - name: Create named.conf
   template: 

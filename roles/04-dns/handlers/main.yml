@@ -19,3 +19,7 @@
 - name: Increment serial
   shell: 
     cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}.{{ domain_name }}
+
+- name: Increment reverse mapping zone file serial
+  shell: 
+    cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/reverse.{{ hostname }}.{{ domain_name }}

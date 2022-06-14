@@ -150,7 +150,7 @@
 - name: flush handlers
   meta: flush_handlers
 
-- name: Mount filesystems
+- name: Mount EXT4 and XFS filesystems
   ansible.posix.mount:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
@@ -163,9 +163,13 @@
   - src: /dev/sdb6
     path: /lab7/fs-xfs
     fstype: xfs
-  - path: /mnt/nfs
+
+- name: Mount NFS filesystem
+  ansible.posix.mount:
     src: "{{ hostname }}.{{ domain_name }}:/shares/nfs"
-    fstype: nfs 
+    path: /mnt/nfs
+    fstype: nfs
+    state: mounted
 
 - name: Create SAMBA group
   ansible.builtin.group:
