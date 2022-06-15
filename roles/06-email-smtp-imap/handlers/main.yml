@@ -10,9 +10,9 @@
     name: firewalld
     state: reloaded
     enabled: yes
-    permanent: yes
+    # permanent: yes
 
-- name: increment serial
+- name: Increment serial
   shell: 
     cmd: awk -i inplace '{if ($0 ~ /Serial/) $1 = $1 + 1; print}' /etc/named/{{ hostname }}.{{ domain_name }}
 

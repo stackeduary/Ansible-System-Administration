@@ -44,7 +44,7 @@
     name: pyyaml
     state: present
 
-- name: Install kubernetes
+- name: Install Kubernetes
   pip: 
     name: kubernetes
     state: present

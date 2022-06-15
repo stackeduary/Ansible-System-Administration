@@ -18,7 +18,7 @@
     name: smb
     state: restarted
     enabled: yes
-    permanent: yes
+    # permanent: yes
 
 - name: Run exportfs -a command
   command: exportfs -a

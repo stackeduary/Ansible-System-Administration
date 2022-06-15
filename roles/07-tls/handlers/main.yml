@@ -4,7 +4,7 @@
     name: firewalld
     state: reloaded
     enabled: yes
-    permanent: yes
+    # permanent: yes
 
 - name: increment serial
   shell: 

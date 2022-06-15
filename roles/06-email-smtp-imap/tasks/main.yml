@@ -164,6 +164,25 @@
     name: pecl/zip
     state: latest
 
+- name: Get OpenStack metadata
+  uri:
+    url: http://169.254.169.254/latest/meta-data/public-ipv4
+    method: GET
+    status_code: 200
+    return_content: yes
+  register: cloud_metadata
+
+- name: Create DNS zone file
+  template:
+    src: zone_file.j2 
+    dest: "/etc/named/{{ hostname }}.{{ domain_name }}"
+    owner: root
+    group: named
+    mode: '0644'
+  notify:
+    - Restart named service
+    - Increment serial  
+
 - name: Overwrite main.cf
   template:
     src: main.cf.j2
@@ -173,11 +192,21 @@
     mode: '0644'
   notify: Restart Postfix service
 
-- name: Add mailuser
+# - name: Add mailuser
+#   user:
+#     name: mailuser
+#     state: present
+#     password: "{{ email_password|password_hash('sha256') }}"
+
+- name: Add user mailuser
   user:
-    name: mailuser
+    name: "{{ mail_user }}"
     state: present
-    password: "{{ email_password|password_hash('sha256') }}"
+    password: "{{ email_password | password_hash('sha512') }}"
+  no_log: true
+
+- name: Flush handlers
+  meta: flush_handlers    
 
 - name: Email nagios@scoring.sa.cs.ut.ee
   become: true
@@ -223,7 +252,16 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart Dovecot service   
+  notify: Restart Dovecot service
+
+- name: Update 10-ssl.conf
+  copy:
+    src: 10-ssl.conf
+    dest: /etc/dovecot/conf.d/10-ssl.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot service 
 
 - name: Update 15-mailboxes.conf
   copy:
@@ -232,25 +270,16 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart Dovecot service    
+  notify: Restart Dovecot service
 
-- name: Update 10-master.conf
-  copy:
-    src: 10-master.conf
-    dest: /etc/dovecot/conf.d/10-master.conf
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart Dovecot service    
-    
-- name: Update 10-ssl.conf
-  copy:
-    src: 10-ssl.conf
-    dest: /etc/dovecot/conf.d/10-ssl.conf
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart Dovecot service  
+- name: Add dovecot user to mail group
+  user:
+    name: "dovecot"
+    group: "mail"
+    append: yes
+
+- name: Flush handlers
+  meta: flush_handlers
 
 - name: Open port 25/TCP for HTTP
   ansible.posix.firewalld:
@@ -284,26 +313,20 @@
   notify:
     - Reload firewalld service
 
-- name: Add mailuser
-  user:
-    name: mailuser
-    state: present
-    password: "{{ email_password|password_hash('sha256') }}"
+# - name: Update 10-master.conf
+#   copy:
+#     src: 10-master.conf
+#     dest: /etc/dovecot/conf.d/10-master.conf
+#     owner: root
+#     group: root
+#     mode: '0644'
+#   notify: Restart Dovecot service
 
-- name: Ensure that dovecot user is in the mail group
-  user:
-    name: "dovecot"
-    group: "mail"
-    append: yes
-
-- name: Update 10-mail.conf 
-  copy:
-    src: 10-mail.conf
-    dest: /etc/dovecot/conf.d/10-mail.conf
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart Dovecot service
+# - name: Add mailuser
+#   user:
+#     name: mailuser
+#     state: present
+#     password: "{{ email_password|password_hash('sha256') }}"
 
 - name: Update master.cf
   copy:
@@ -382,12 +405,19 @@
     login_password: '{{ mysql_root_password }}'
 
 - name: Create roundcube user 
+  # mysql_user:
+  #   name: roundcube
+  #   password: "{{ email_password|password_hash('sha512') }}"
+  #   login_password: '{{ mysql_root_password }}'
+  #   priv: 'roundcubemail.*:ALL'
+  #   host: localhost
   mysql_user:
     name: roundcube
-    password: "{{ email_password|password_hash('sha256') }}"
+    password: '{{ email_password }}'
     login_password: '{{ mysql_root_password }}'
     priv: 'roundcubemail.*:ALL'
     host: localhost
+  no_log: true  
   
 - name: Download the Roundcube release
   get_url:
@@ -427,8 +457,8 @@
     group: apache
     mode: '0644'
   notify: 
+    - Restart httpd service  
     - Restart php-fpm service
-    - Restart httpd service
 
 - name: Create Roundcube PHP config file
   template:
@@ -438,8 +468,8 @@
     group: apache
     mode: '0644'
   notify:
+    - Restart httpd service  
     - Restart php-fpm service
-    - Restart httpd service
 
 - name: Seed Roundcubemail database
   mysql_db:

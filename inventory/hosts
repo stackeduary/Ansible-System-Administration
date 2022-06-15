@@ -3,4 +3,4 @@
 localhost
 
 [SysAdmin]
-centos@172.17.91.15 ansible_user=centos
+centos@172.17.88.241 ansible_user=centos

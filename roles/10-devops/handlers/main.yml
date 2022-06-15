@@ -4,4 +4,4 @@
     name: firewalld
     state: reloaded
     enabled: yes
-    permanent: yes
+    # permanent: yes

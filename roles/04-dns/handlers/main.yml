@@ -10,7 +10,7 @@
     name: firewalld
     state: reloaded
     enabled: yes
-    permanent: yes    
+    # permanent: yes    
 
 - name: Reboot a slow machine that might have lots of updates to apply
   reboot:

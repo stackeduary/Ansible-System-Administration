@@ -165,16 +165,16 @@
     path: /lab7/fs-xfs
     fstype: xfs
 
-# - name: pause
-#   pause:
-#     prompt: "Press [Enter] to continue..."
+- name: Pause to mount NFS filesystem
+  pause:
+    prompt: "Press [Enter] to continue..."
 
-- name: Mount NFS filesystem
-  ansible.posix.mount:
-    src: "{{ hostname }}.{{ domain_name }}:/shares/nfs"
-    path: ~/mnt/nfs
-    fstype: nfs
-    state: mounted    
+# - name: Mount NFS filesystem
+#   ansible.posix.mount:
+#     src: "{{ hostname }}.{{ domain_name }}:/shares/nfs"
+#     path: ~/mnt/nfs
+#     fstype: nfs
+#     state: mounted    
 
 - name: Create SAMBA group
   ansible.builtin.group:
@@ -226,12 +226,12 @@
   - Restart SMB service
 
 - name: /usr/local/bin/consul kv put object/{{ hostname }} {{ key_value_password }}
-  shell: /usr/local/bin/consul kv put object/{{ hostname }} {{ key_value_password }}
+  shell: /usr/local/bin/consul kv put object/{{ hostname }} "{{ key_value_password }}"
 
-# - name: Add a configured host
-#   shell: mc config host add scoring https://scoring.sa.cs.ut.ee:9000 {{ hostname }} {{ key_value_password }}
+- name: Add a configured host
+  shell: mc config host add scoring https://scoring.sa.cs.ut.ee:9000 {{ hostname }} {{ key_value_password }}
 
-- name: pause
+- name: Pause to add a configured host
   pause:
     prompt: "Press [Enter] to continue..."
 

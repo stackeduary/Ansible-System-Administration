@@ -4,17 +4,18 @@
   become: yes
   become_user: root
   vars:
-    hostname: B98041Bill
+    hostname: b98041bill
     domain_name: sa.cs.ut.ee
-    ip_address: 172.17.91.15
-    zone_serial: 2022061403 # MUST UPDATE SERIAL EVERY TIME
-    reverse_ip: 91.17.172
+    ip_address: 172.17.88.241
+    zone_serial: 2022061505 # MUST UPDATE SERIAL EVERY TIME
+    reverse_ip: 88.17.172
     scoring_server: 172.17.66.134
-    last_octet: 15
+    last_octet: 241
     mysql_root_password: password
+    mail_user: mailuser
     email_password: HireBill2022
     email_recipient: nagios@scoring.sa.cs.ut.ee
-    key_value_password: kvpassword1
+    key_value_password: 2daysuperadmin
     docker: 
       network: 
         subnet: "192.169.67.0/24"
@@ -24,15 +25,15 @@
 
   roles:
   # - { role: ports, tags: ports } 
-  # - { role: 02-etais, tags: etais }
-  # - { role: 04-dns, tags: dns }
-  # - { role: 05-web-apache, tags: web-apache }
-  # - { role: 06-email-smtp-imap, tags: email-smtp-imap }
-  # - { role: 07-tls, tags: tls }
-  # - { role: 08-filesystems, tags: filesystems }
-  # - { role: 09-containers, tags: containers-i }
-  # - { role: 09a-containers, tags: containers-ii }
-  # - { role: 10-devops, tags: DevOps }
+  - { role: 02-etais, tags: etais }
+  - { role: 04-dns, tags: dns }
+  - { role: 05-web-apache, tags: web-apache }
+  - { role: 06-email-smtp-imap, tags: email-smtp-imap }
+  - { role: 07-tls, tags: tls }
+  - { role: 08-filesystems, tags: filesystems }
+  - { role: 09-containers, tags: containers-i }
+  - { role: 09a-containers, tags: containers-ii }
+  - { role: 10-devops, tags: DevOps }
   - { role: 11-k8s-idempotent, tags: Kubernetes }
   - { role: 11a-k8s-nonidempotent, tags: Kubernetes }
     #- tier1

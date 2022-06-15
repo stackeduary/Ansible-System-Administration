@@ -7,7 +7,7 @@
 #   pause:
 #     prompt: "Press [Enter] to continue..."
 
-- name: add DNS service
+- name: Add DNS service
   ansible.posix.firewalld:
     service: dns
     permanent: yes
@@ -24,7 +24,7 @@
 - name: Print IP address
   debug: var=cloud_metadata.content
 
-- name: open port 53/TCP for DNS
+- name: Open port 53/TCP for DNS
   ansible.posix.firewalld:
     port: 53/tcp
     permanent: yes
@@ -32,7 +32,7 @@
   notify:
     - Reload firewalld service
 
-- name: open port 53/UDP for DNS
+- name: Open port 53/UDP for DNS
   ansible.posix.firewalld:
     port: 53/udp
     permanent: yes
@@ -40,7 +40,7 @@
   notify:
     - Reload firewalld service
 
-- name: open port 8301/TCP for Scoring
+- name: Open port 8301/TCP for Scoring
   ansible.posix.firewalld:
     port: 8301/tcp
     permanent: yes
@@ -48,7 +48,7 @@
   notify:
     - Reload firewalld service
 
-- name: open port 8301/UDP for Scoring
+- name: Open port 8301/UDP for Scoring
   ansible.posix.firewalld:
     port: 8301/udp
     permanent: yes
